@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "876206db0bc2bd76d88a6900ea3ac06220655f2c65c809e29492471ee82cc6c2"
+            "sha256": "0a5431f37d91bd86da169006d82176b4fcb63692f1f0ab68819db50a36c6d4d2"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -258,6 +258,13 @@
                 "sha256:9f9e94e8d22b100ed3a43cee8c47a7ff7b185e778a1f2da9ec5c73fc4e081b87"
             ],
             "version": "==3.7.7"
+        },
+        "djangorestframework-jwt": {
+            "hashes": [
+                "sha256:ab15dfbbe535eede8e2e53adaf52ef0cf018ee27dbfad10cbc4cbec2ab63d38c",
+                "sha256:5efe33032f3a4518a300dc51a51c92145ad95fb6f4b272e5aa24701db67936a7"
+            ],
+            "version": "==1.11.0"
         },
         "docutils": {
             "hashes": [
@@ -516,6 +523,13 @@
                 "sha256:dbae1046def0efb574852fab9e90209b23f556367b5a320c0bcb871c77c3e8cc"
             ],
             "version": "==2.2.0"
+        },
+        "pyjwt": {
+            "hashes": [
+                "sha256:b752500cafd4df9f0dc6efe9063603e36a4e1a5c24fee48234d2949b6606aa59",
+                "sha256:9c3016e4a292151c5396e25cc0c28c4e1cdf13fa19118eb84f500f9670e3f628"
+            ],
+            "version": "==1.6.0"
         },
         "pyparsing": {
             "hashes": [
