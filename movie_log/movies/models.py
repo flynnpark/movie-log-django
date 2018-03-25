@@ -32,4 +32,5 @@ class Review(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.FloatField()
+    title = models.TextField(null=True)
     message = models.TextField()

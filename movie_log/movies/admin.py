@@ -1,3 +1,36 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+
+@admin.register(models.Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = (
+        'title',
+        'subtitle',
+        'image',
+        'pub_date',
+        'director',
+        'actor',
+        'user_rating',
+    )
+
+
+@admin.register(models.SimpleReview)
+class SimpleReviewAdmin(admin.ModelAdmin):
+    list_display = (
+        'movie',
+        'creator',
+        'rating',
+        'message',
+    )
+
+
+@admin.register(models.Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = (
+        'movie',
+        'creator',
+        'rating',
+        'title',
+        'message',
+    )
