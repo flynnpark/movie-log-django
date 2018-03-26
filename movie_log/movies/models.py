@@ -11,6 +11,9 @@ class Movie(models.Model):
     director = models.CharField(max_length=128, null=True)
     actor = models.CharField(max_length=256, null=True)
 
+    def __str__(self):
+        return '{}({})'.format(self.title, self.pub_date)
+
 
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,6 +28,9 @@ class SimpleReview(TimeStampedModel):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.FloatField()
     message = models.TextField()
+
+    def __str__(self):
+            return '[{}] {}'.format(self.rating, self.message)
 
 
 class SimpleReviewLike(TimeStampedModel):
