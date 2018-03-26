@@ -28,9 +28,25 @@ class SimpleReview(TimeStampedModel):
     message = models.TextField()
 
 
+class SimpleReviewLike(TimeStampedModel):
+    creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    review = models.ForeignKey(SimpleReview, on_delete=models.CASCADE)
+
+
 class Review(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.FloatField()
     title = models.TextField(null=True)
+    message = models.TextField()
+
+
+class ReviewLike(TimeStampedModel):
+    creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+
+
+class ReviewComment(TimeStampedModel):
+    creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
     message = models.TextField()
