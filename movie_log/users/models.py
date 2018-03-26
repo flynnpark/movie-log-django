@@ -9,7 +9,6 @@ class User(AbstractUser):
     GENDER_CHOICE = (
         ('male', 'Male'),
         ('femail', 'Female'),
-        ('not-specified', 'Not specified')
     )
 
     # First Name and Last Name do not cover name patterns

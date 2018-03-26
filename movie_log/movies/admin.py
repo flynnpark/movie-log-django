@@ -11,7 +11,6 @@ class MovieAdmin(admin.ModelAdmin):
         'pub_date',
         'director',
         'actor',
-        'user_rating',
     )
 
 
