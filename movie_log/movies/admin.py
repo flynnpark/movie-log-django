@@ -25,6 +25,14 @@ class SimpleReviewAdmin(admin.ModelAdmin):
     )
 
 
+@admin.register(models.SimpleReviewLike)
+class SimpleReviewLikeAdmin(admin.ModelAdmin):
+    list_display = (
+        'creator',
+        'review',
+    )
+
+
 @admin.register(models.Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = (
@@ -32,5 +40,22 @@ class ReviewAdmin(admin.ModelAdmin):
         'creator',
         'rating',
         'title',
+        'message',
+    )
+
+
+@admin.register(models.ReviewLike)
+class ReviewLikeAdmin(admin.ModelAdmin):
+    list_display = (
+        'creator',
+        'review',
+    )
+
+
+@admin.register(models.ReviewComment)
+class ReviewCommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'creator',
+        'review',
         'message',
     )
