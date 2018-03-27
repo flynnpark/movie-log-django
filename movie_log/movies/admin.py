@@ -8,9 +8,9 @@ class MovieAdmin(admin.ModelAdmin):
         'title',
         'subtitle',
         'image',
+        'genre',
         'pub_date',
         'director',
-        'actor',
     )
 
 

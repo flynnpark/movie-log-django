@@ -5,11 +5,13 @@ from movie_log.users import models as user_models
 class Movie(models.Model):
     title = models.CharField(max_length=512)
     subtitle = models.CharField(max_length=512, null=True)
-    naver_link = models.URLField(null=True)
     image = models.ImageField(blank=True)
-    pub_date = models.IntegerField(null=True)
+    pub_date = models.CharField(max_length=32, null=True)
+    genre = models.CharField(max_length=128, null=True)
+    nation = models.CharField(max_length=32, null=True)
     director = models.CharField(max_length=128, null=True)
-    actor = models.CharField(max_length=256, null=True)
+    company = models.CharField(max_length=256, null=True)
+    actors = models.TextField(null=True)
 
     def __str__(self):
         return '{}({})'.format(self.title, self.pub_date)
