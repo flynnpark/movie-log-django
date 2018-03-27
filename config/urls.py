@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
-
+    url(r'^movies/', include('movie_log.movies.urls', namespace='movies')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
