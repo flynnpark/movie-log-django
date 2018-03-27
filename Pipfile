@@ -16,7 +16,7 @@ python_version = "3.5"
 
 [packages]
 
-djangorestframework = "==3.7.7"
+djangorestframework = "*"
 pytz = "==2018.3"
 awesome-slugify = "==1.6.5"
 pillow = "==5.0.0"
