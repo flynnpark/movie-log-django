@@ -2,42 +2,71 @@ from rest_framework import serializers
 from . import models
 
 
-class MovieSerializer(serializers.Serializer):
+class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Movie
-        fields = '__all__'
+        fields = (
+            'title',
+            'image',
+            'pub_date',
+            'genre'
+        )
 
 
-class SimpleReviewSerializer(serializers.Serializer):
+class MovieDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Movie
+        fields = ('__all__')
+
+
+class InputMovieSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Movie
+        fields = (
+            'title',
+            'subtitle',
+            'image',
+            'pub_date',
+            'genre',
+            'nation',
+            'director',
+            'company',
+            'actors'
+        )
+
+
+class SimpleReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.SimpleReview
         fields = '__all__'
 
 
-class SimpleReviewLikeSerializer(serializers.Serializer):
+class SimpleReviewLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.SimpleReviewLike
         fields = '__all__'
 
 
-class ReviewSerializer(serializers.Serializer):
+class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Review
         fields = '__all__'
 
 
-class ReviewLikeSerializer(serializers.Serializer):
+class ReviewLikeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ReviewLike
         fields = '__all__'
 
 
-class ReviewCommentSerializer(serializers.Serializer):
+class ReviewCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.ReviewComment

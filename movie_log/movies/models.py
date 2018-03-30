@@ -25,6 +25,11 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class MovieLike(TimeStampedModel):
+    creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+
 class SimpleReview(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
