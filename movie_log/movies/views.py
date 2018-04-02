@@ -1,9 +1,9 @@
 from rest_framework import status
-from rest_framework import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from movie_log.movies import models, serializers
-from movie_log.users import models as user_models
+from movie_log.users import models as user_models, serializers as user_serializers
 
 
 class Movies(APIView):
@@ -16,9 +16,48 @@ class Movies(APIView):
 
 class LikeMovie(APIView):
 
-    def get(self, request, movie_id, format=None):
-        likes = models.MovieLike.objects.filter(movie__id=movie_id)
-        like_creator_ids = likes.values('creator_id')
-        users = user_models.User.objects.filter(id__in=like_creator_ids)
+    permission_classes = (IsAuthenticated, )
 
-        serializer = user_ser
+    def get(self, request, movie_id, format=None):
+        likes = models.MovieLike.objects.filter(id=movie_id)
+        like_creator_ids = likes.values('creator')
+        users = user_models.User.objects.filter(id__in=like_creator_ids)
+        serializer = user_serializers.ListUserSerializer(users, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, movie_id, format=None):
+        user = request.user
+
+        try:
+            found_movie = models.Movie.objects.get(id=movie_id)
+        except models.Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            models.MovieLike.objects.get(creator=user, movie=found_movie)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
+        except models.MovieLike.DoesNotExist:
+            new_like = models.MovieLike.objects.create(creator=user, movie=found_movie)
+            new_like.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+
+class UnlikeMovie(APIView):
+
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, movie_id, format=None):
+        user = request.user
+
+        try:
+            found_movie = models.Movie.objects.get(id=movie_id)
+        except models.Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            preexisting_like = models.MovieLike.objects.get(creator=user, movie=found_movie)
+            preexisting_like.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except models.MovieLike.DoesNotExist:
+            return Response(status=status.HTTP_304_NOT_MODIFIED)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . import models
+from movie_log.movies import models
 
 
 @admin.register(models.Movie)
@@ -11,6 +11,15 @@ class MovieAdmin(admin.ModelAdmin):
         'genre',
         'pub_date',
         'director',
+    )
+
+
+@admin.register(models.MovieLike)
+class MovieLikeAdmin(admin.ModelAdmin):
+    list_display = (
+        'movie',
+        'creator',
+        'created_at'
     )
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from . import models
+from movie_log.movies import models
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -36,6 +36,13 @@ class InputMovieSerializer(serializers.ModelSerializer):
             'company',
             'actors'
         )
+
+
+class MovieLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.MovieLike
+        fields = '__all__'
 
 
 class SimpleReviewSerializer(serializers.ModelSerializer):
