@@ -14,6 +14,18 @@ class Movies(APIView):
         return Response(data=serializer.data)
 
 
+class MovieDetail(APIView):
+
+    def get(self, request, movie_id, format=None):
+        try:
+            found_movie = models.Movie.objects.get(id=movie_id)
+        except models.Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.MovieDetailSerializer(found_movie, context={"request": request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class LikeMovie(APIView):
 
     permission_classes = (IsAuthenticated, )

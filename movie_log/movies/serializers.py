@@ -14,13 +14,6 @@ class MovieSerializer(serializers.ModelSerializer):
         )
 
 
-class MovieDetailSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Movie
-        fields = ('__all__')
-
-
 class InputMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -78,3 +71,20 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ReviewComment
         fields = '__all__'
+
+
+class MovieDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Movie
+        fields = (
+            'title',
+            'subtitle',
+            'image',
+            'pub_date',
+            'genre',
+            'nation',
+            'director',
+            'company',
+            'actors'
+        )
