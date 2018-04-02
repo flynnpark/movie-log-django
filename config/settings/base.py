@@ -253,3 +253,7 @@ REST_FRAMEWORK = {
 }
 
 REST_USE_JWT = True
+
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False
+}
