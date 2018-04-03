@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from movie_log.movies import models
+from movie_log.users import serializers as user_serializers
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -40,6 +41,8 @@ class MovieLikeSerializer(serializers.ModelSerializer):
 
 class SimpleReviewSerializer(serializers.ModelSerializer):
 
+    creator = user_serializers.UserSerializer(read_only=True)
+
     class Meta:
         model = models.SimpleReview
         fields = '__all__'
@@ -75,16 +78,8 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
 
 class MovieDetailSerializer(serializers.ModelSerializer):
 
+    simple_reviews = SimpleReviewSerializer(many=True, required=False)
+
     class Meta:
         model = models.Movie
-        fields = (
-            'title',
-            'subtitle',
-            'image',
-            'pub_date',
-            'genre',
-            'nation',
-            'director',
-            'company',
-            'actors'
-        )
+        fields = ('__all__')

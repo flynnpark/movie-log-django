@@ -32,7 +32,7 @@ class MovieLike(TimeStampedModel):
 
 class SimpleReview(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='simple_reviews')
     rating = models.FloatField()
     message = models.TextField()
 
