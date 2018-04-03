@@ -11,7 +11,8 @@ class MovieSerializer(serializers.ModelSerializer):
             'title',
             'image',
             'pub_date',
-            'genre'
+            'genre',
+            'like_count'
         )
 
 
@@ -45,7 +46,13 @@ class SimpleReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.SimpleReview
-        fields = '__all__'
+        fields = (
+            'creator',
+            'movie',
+            'rating',
+            'message',
+            'like_count'
+        )
 
 
 class SimpleReviewLikeSerializer(serializers.ModelSerializer):
@@ -82,4 +89,16 @@ class MovieDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Movie
-        fields = ('__all__')
+        fields = (
+            'title',
+            'subtitle',
+            'image',
+            'pub_date',
+            'genre',
+            'nation',
+            'director',
+            'company',
+            'actors',
+            'like_count',
+            'simple_reviews'
+        )

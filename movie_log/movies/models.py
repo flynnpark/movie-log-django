@@ -16,6 +16,10 @@ class Movie(models.Model):
     def __str__(self):
         return '{}({})'.format(self.title, self.pub_date)
 
+    @property
+    def like_count(self):
+        return self.likes.all().count()
+
 
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,7 +31,7 @@ class TimeStampedModel(models.Model):
 
 class MovieLike(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='likes')
 
 
 class SimpleReview(TimeStampedModel):
@@ -39,10 +43,14 @@ class SimpleReview(TimeStampedModel):
     def __str__(self):
             return '[{}] {}'.format(self.rating, self.message)
 
+    @property
+    def like_count(self):
+        return self.likes.all().count()
+
 
 class SimpleReviewLike(TimeStampedModel):
     creator = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
-    review = models.ForeignKey(SimpleReview, on_delete=models.CASCADE)
+    review = models.ForeignKey(SimpleReview, on_delete=models.CASCADE, related_name='likes')
 
 
 class Review(TimeStampedModel):
