@@ -47,6 +47,7 @@ class SimpleReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SimpleReview
         fields = (
+            'id',
             'creator',
             'movie',
             'rating',
