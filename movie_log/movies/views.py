@@ -27,7 +27,6 @@ class MovieDetail(APIView):
 
 
 class LikeMovie(APIView):
-
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, movie_id, format=None):
@@ -56,7 +55,6 @@ class LikeMovie(APIView):
 
 
 class UnlikeMovie(APIView):
-
     permission_classes = (IsAuthenticated, )
 
     def delete(self, request, movie_id, format=None):
@@ -76,7 +74,6 @@ class UnlikeMovie(APIView):
 
 
 class SimpleReview(APIView):
-
     permission_classes = (IsAuthenticated, )
 
     def post(self, request, movie_id, format=None):
@@ -94,3 +91,42 @@ class SimpleReview(APIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LikeSimpleReview(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, sreview_id, format=None):
+        user = request.user
+
+        try:
+            found_sreview = models.SimpleReview.objects.get(id=sreview_id)
+        except models.SimpleReview.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            models.SimpleReviewLike.objects.get(creator=user, review=sreview_id)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
+        except models.SimpleReviewLike.DoesNotExist:
+            new_like = models.SimpleReviewLike.objects.create(creator=user, review=found_sreview)
+            new_like.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+
+class UnlikeSimpleReview(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, sreview_id, format=None):
+        user = request.user
+
+        try:
+            found_sreview = models.SimpleReview.objects.get(id=sreview_id)
+        except models.SimpleReview.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            preexisting_like = models.SimpleReviewLike.objects.get(creator=user, review=found_sreview)
+            preexisting_like.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except models.SimpleReviewLike.DoesNotExist:
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
