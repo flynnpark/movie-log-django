@@ -58,9 +58,18 @@ class SimpleReviewSerializer(serializers.ModelSerializer):
 
 class SimpleReviewLikeSerializer(serializers.ModelSerializer):
 
+    creator = user_serializers.UserSerializer(read_only=True)
+
     class Meta:
         model = models.SimpleReviewLike
-        fields = '__all__'
+        fields = (
+            'id',
+            'creator',
+            'movie',
+            'rating',
+            'title',
+            'message'
+        )
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -102,4 +111,16 @@ class MovieDetailSerializer(serializers.ModelSerializer):
             'actors',
             'like_count',
             'simple_reviews'
+        )
+
+
+class ReviewAtMovieSerializer(serializers.ModelSerializer):
+
+    reviews = ReviewSerializer(many=True, required=False)
+
+    class Meta:
+        model = models.Movie
+        fields = (
+            'title',
+            'reviews'
         )

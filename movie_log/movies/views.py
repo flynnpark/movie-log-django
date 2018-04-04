@@ -130,3 +130,16 @@ class UnlikeSimpleReview(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except models.SimpleReviewLike.DoesNotExist:
             return Response(status=status.HTTP_304_NOT_MODIFIED)
+
+
+class ReviewAtMovie(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, movie_id, format=None):
+        try:
+            found_movie = models.Movie.objects.get(id=movie_id)
+        except models.Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.ReviewAtMovieSerializer(found_movie, context={"request": request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)

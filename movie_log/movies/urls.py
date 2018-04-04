@@ -7,7 +7,8 @@ urlpatterns = [
     path('<int:movie_id>/', views.MovieDetail.as_view(), name='movie_detail'),
     path('<int:movie_id>/like/', views.LikeMovie.as_view(), name='like_movie'),
     path('<int:movie_id>/unlike/', views.UnlikeMovie.as_view(), name='unlike_movie'),
-    path('<int:movie_id>/sreview/', views.SimpleReview.as_view(), name='simple_review'),
-    path('sreview/<int:sreview_id>/like/', views.LikeSimpleReview.as_view(), name='like_sreview'),
-    path('sreview/<int:sreview_id>/unlike/', views.UnlikeSimpleReview.as_view(), name='unlike_sreview'),
+    path('<int:movie_id>/sreviews/', views.SimpleReview.as_view(), name='simple_review'),
+    path('<int:movie_id>/reviews/', views.ReviewAtMovie.as_view(), name='review_at_movie'),
+    path('sreviews/<int:sreview_id>/like/', views.LikeSimpleReview.as_view(), name='like_sreview'),
+    path('sreviews/<int:sreview_id>/unlike/', views.UnlikeSimpleReview.as_view(), name='unlike_sreview'),
 ]
