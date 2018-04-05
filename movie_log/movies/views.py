@@ -86,7 +86,7 @@ class SimpleReview(APIView):
 
         serializer = serializers.SimpleReviewSerializer(data=request.data)
 
-        if (serializer.is_valid()):
+        if serializer.is_valid():
             serializer.save(creator=user, movie=found_movie)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -142,4 +142,33 @@ class ReviewAtMovie(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = serializers.ReviewAtMovieSerializer(found_movie, context={"request": request})
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, movie_id, format=None):
+        user = request.user
+
+        try:
+            found_movie = models.Movie.objects.get(id=movie_id)
+        except models.Movie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.ReviewSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(creator=user, movie=found_movie)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReviewDetail(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, review_id, format=None):
+        try:
+            found_review = models.Review.objects.get(id=review_id)
+        except models.Review.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.ReviewSerializer(found_review, context={"request": request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)

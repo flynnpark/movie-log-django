@@ -74,6 +74,8 @@ class SimpleReviewLikeSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
 
+    creator = user_serializers.UserSerializer(read_only=True)
+
     class Meta:
         model = models.Review
         fields = '__all__'
