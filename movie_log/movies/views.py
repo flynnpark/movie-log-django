@@ -172,3 +172,50 @@ class ReviewDetail(APIView):
 
         serializer = serializers.ReviewSerializer(found_review, context={"request": request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class LikeReview(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, review_id, format=None):
+        likes = models.ReviewLike.objects.filter(id=review_id)
+        like_creator_ids = likes.values('creator')
+        users = user_models.User.objects.filter(id__in=like_creator_ids)
+        serializer = user_serializers.ListUserSerializer(users, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, review_id, format=None):
+        user = request.user
+
+        try:
+            found_review = models.Review.objects.get(id=review_id)
+        except models.ReviewLike.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            models.ReviewLike.objects.get(creator=user, review=found_review)
+            return Response(status=status.HTTP_304_NOT_MODIFIED)
+        except models.ReviewLike.DoesNotExist:
+            new_like = models.ReviewLike.objects.create(creator=user, review=found_review)
+            new_like.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+
+class UnlikeReview(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, review_id, format=None):
+        user = request.user
+
+        try:
+            found_review = models.Review.objects.get(id=review_id)
+        except models.ReviewLike.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            preexisting_like = models.ReviewLike.objects.get(creator=user, review=found_review)
+            preexisting_like.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except models.ReviewLike.DoesNotExist:
+            return Response(status=status.HTTP_304_NOT_MODIFIED)

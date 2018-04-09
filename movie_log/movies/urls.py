@@ -20,4 +20,6 @@ urlpatterns = [
     path('sreview/<int:sreview_id>/unlike/', views.UnlikeSimpleReview.as_view(), name='unlike_sreview'),
     # 리뷰 조회
     path('review/<int:review_id>/', views.ReviewDetail.as_view(), name='review_detail'),
+    path('review/<int:review_id>/like/', views.LikeReview.as_view(), name='review_like'),
+    path('review/<int:review_id>/unlike/', views.UnlikeReview.as_view(), name='review_unlike'),
 ]
