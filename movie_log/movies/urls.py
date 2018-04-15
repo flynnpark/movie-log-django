@@ -6,6 +6,8 @@ urlpatterns = [
     path('', views.Movies.as_view(), name='all_movies'),
     # 영화 상세 정보 및 간단 리뷰 조회
     path('<int:movie_id>/', views.MovieDetail.as_view(), name='movie_detail'),
+    # 영화 좋아요 리스트
+    path('<int:movie_id>/likes/', views.MovieLikeList.as_view(), name='movie_like_list'),
     # 영화 좋아요
     path('<int:movie_id>/like/', views.LikeMovie.as_view(), name='like_movie'),
     # 영화 좋아요 취소

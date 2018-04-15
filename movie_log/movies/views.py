@@ -1,8 +1,9 @@
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from movie_log.movies import models, serializers
+from movie_log.movies import models, pagination, serializers
 from movie_log.users import models as user_models, serializers as user_serializers
 
 
@@ -26,16 +27,20 @@ class MovieDetail(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class LikeMovie(APIView):
-    permission_classes = (IsAuthenticated, )
+class MovieLikeList(ListAPIView):
+    serializer_class = user_serializers.ListUserSerializer
+    pagination_class = pagination.StandardResultSetPagination
 
-    def get(self, request, movie_id, format=None):
+    def get_queryset(self):
+        movie_id = self.kwargs['movie_id']
         likes = models.MovieLike.objects.filter(id=movie_id)
         like_creator_ids = likes.values('creator')
-        users = user_models.User.objects.filter(id__in=like_creator_ids)
-        serializer = user_serializers.ListUserSerializer(users, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return user_models.User.objects.filter(id__in=like_creator_ids)
+
+
+class LikeMovie(APIView):
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request, movie_id, format=None):
         user = request.user
