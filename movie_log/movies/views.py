@@ -179,16 +179,20 @@ class ReviewDetail(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class LikeReview(APIView):
-    permission_classes = (IsAuthenticated, )
+class ReviewLikeList(ListAPIView):
+    serializer_class = user_serializers.ListUserSerializer
+    pagination_class = pagination.StandardResultSetPagination
 
-    def get(self, request, review_id, format=None):
+    def get_queryset(self):
+        review_id = self.kwargs['review_id']
         likes = models.ReviewLike.objects.filter(id=review_id)
         like_creator_ids = likes.values('creator')
-        users = user_models.User.objects.filter(id__in=like_creator_ids)
-        serializer = user_serializers.ListUserSerializer(users, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return user_models.User.objects.filter(id__in=like_creator_ids)
+
+
+class LikeReview(APIView):
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request, review_id, format=None):
         user = request.user

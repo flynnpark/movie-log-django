@@ -22,6 +22,10 @@ urlpatterns = [
     path('sreview/<int:sreview_id>/unlike/', views.UnlikeSimpleReview.as_view(), name='unlike_sreview'),
     # 리뷰 조회
     path('review/<int:review_id>/', views.ReviewDetail.as_view(), name='review_detail'),
-    path('review/<int:review_id>/like/', views.LikeReview.as_view(), name='review_like'),
-    path('review/<int:review_id>/unlike/', views.UnlikeReview.as_view(), name='review_unlike'),
+    # 리뷰 좋아요 리스트
+    path('review/<int:review_id>/likes/', views.ReviewLikeList.as_view(), name='review_like_list'),
+    # 리뷰 좋아요
+    path('review/<int:review_id>/like/', views.LikeReview.as_view(), name='like_review'),
+    # 리뷰 좋아요 취소
+    path('review/<int:review_id>/unlike/', views.UnlikeReview.as_view(), name='unlike_review'),
 ]
