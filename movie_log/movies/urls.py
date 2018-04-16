@@ -14,8 +14,10 @@ urlpatterns = [
     path('<int:movie_id>/unlike/', views.UnlikeMovie.as_view(), name='unlike_movie'),
     # 간단 리뷰 작성
     path('<int:movie_id>/sreview/', views.SimpleReview.as_view(), name='simple_review'),
-    # 리뷰 리스트 및 작성
-    path('<int:movie_id>/review/', views.ReviewAtMovie.as_view(), name='review_at_movie'),
+    # 해당 영화 리뷰 리스트
+    path('<int:movie_id>/reviews/', views.MovieReviewList.as_view(), name='movie_review_list'),
+    # 영화 리뷰 작성
+    path('<int:movie_id>/review/', views.MovieReview.as_view(), name='review_at_movie'),
     # 간단 리뷰 좋아요
     path('sreview/<int:sreview_id>/like/', views.LikeSimpleReview.as_view(), name='like_sreview'),
     # 간단 리뷰 좋아요 취소

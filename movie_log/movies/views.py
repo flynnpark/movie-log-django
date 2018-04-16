@@ -35,7 +35,6 @@ class MovieLikeList(ListAPIView):
         movie_id = self.kwargs['movie_id']
         likes = models.MovieLike.objects.filter(id=movie_id)
         like_creator_ids = likes.values('creator')
-
         return user_models.User.objects.filter(id__in=like_creator_ids)
 
 
@@ -137,17 +136,18 @@ class UnlikeSimpleReview(APIView):
             return Response(status=status.HTTP_304_NOT_MODIFIED)
 
 
-class ReviewAtMovie(APIView):
+class MovieReviewList(ListAPIView):
+    serializer_class = serializers.ReviewSerializer
+    pagination_class = pagination.StandardResultSetPagination
+
+    def get_queryset(self):
+        movie_id = self.kwargs['movie_id']
+        movie = models.Movie.objects.get(id=movie_id)
+        return models.Review.objects.filter(movie=movie)
+
+
+class MovieReview(APIView):
     permission_classes = (IsAuthenticated, )
-
-    def get(self, request, movie_id, format=None):
-        try:
-            found_movie = models.Movie.objects.get(id=movie_id)
-        except models.Movie.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        serializer = serializers.ReviewAtMovieSerializer(found_movie, context={"request": request})
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, movie_id, format=None):
         user = request.user
@@ -187,7 +187,6 @@ class ReviewLikeList(ListAPIView):
         review_id = self.kwargs['review_id']
         likes = models.ReviewLike.objects.filter(id=review_id)
         like_creator_ids = likes.values('creator')
-
         return user_models.User.objects.filter(id__in=like_creator_ids)
 
 

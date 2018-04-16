@@ -114,15 +114,3 @@ class MovieDetailSerializer(serializers.ModelSerializer):
             'like_count',
             'simple_reviews'
         )
-
-
-class ReviewAtMovieSerializer(serializers.ModelSerializer):
-
-    reviews = ReviewSerializer(many=True, required=False)
-
-    class Meta:
-        model = models.Movie
-        fields = (
-            'title',
-            'reviews'
-        )
